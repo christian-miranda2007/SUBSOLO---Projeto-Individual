@@ -1,0 +1,452 @@
+
+@import url('estilo.css');
+.about-section {
+    padding: 110px 10%;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.about-container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.about-cabecalho {
+    margin-bottom: 55px;
+}
+
+.about-cabecalho span {
+    font-family: var(--fonte-texto);
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #8cbdd0;
+}
+
+.about-cabecalho h2 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(45px, 7vw, 85px);
+    line-height: 0.9;
+    margin: 20px 0;
+}
+
+.about-cabecalho p {
+    font-family: var(--fonte-texto);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.about-conteudo {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-texto {
+    max-width: 700px;
+}
+
+.about-texto p {
+    font-family: var(--fonte-texto);
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 22px;
+}
+
+.about-foto-principal {
+    width: 100%;
+    height: 470px;
+    position: relative;
+    margin: 0;
+}
+
+.about-foto-principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.15);
+}
+
+.about-foto-principal figcaption {
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 12px;
+}
+
+/* =========================================
+   ABERTURA
+========================================= */
+
+.about-hero {
+    min-height: 85vh;
+    padding: 80px 10%;
+    background: #111;
+    color: #f5f5f5;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.about-hero-texto > span {
+    font-family: var(--fonte-texto);
+    font-size: 11px;
+    color: #8cbdd0;
+    letter-spacing: 2px;
+}
+
+.about-hero h2 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(70px, 10vw, 130px);
+    line-height: 0.8;
+    margin: 35px 0;
+}
+
+.about-hero p {
+    font-family: var(--fonte-texto);
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 400px;
+    color: #aaa;
+}
+
+.about-link {
+    display: inline-block;
+    margin-top: 35px;
+    color: #8cbdd0;
+    text-decoration: none;
+    font-family: var(--fonte-texto);
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.about-link:hover {
+    color: #fff;
+}
+
+.about-hero-foto {
+    width: 100%;
+    height: 530px;
+}
+
+.about-hero-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.2);
+}
+
+.about-hero-legenda {
+    position: absolute;
+    bottom: 25px;
+    left: 10%;
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    color: #777;
+}
+
+/* =========================================
+   FRASES / CITAÇÕES
+========================================= */
+
+.about-citacao {
+    margin: 75px 0;
+    padding: 35px 40px;
+    border-left: 4px solid #8cbdd0;
+    background: rgba(128, 128, 128, 0.08);
+}
+
+.about-citacao span {
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #8cbdd0;
+}
+
+.about-citacao blockquote {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(25px, 4vw, 42px);
+    line-height: 1.1;
+    margin: 25px 0;
+}
+
+.about-citacao small {
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   CARROSSEIS
+========================================= */
+
+.about-referencias {
+    margin-top: 85px;
+}
+
+.about-referencias h3 {
+    font-family: var(--fonte-titulo);
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.about-carrossel {
+    display: flex;
+    gap: 22px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 20px;
+}
+
+.about-carrossel::-webkit-scrollbar {
+    height: 5px;
+}
+
+.about-carrossel::-webkit-scrollbar-thumb {
+    background: #8cbdd0;
+}
+
+.about-disco {
+    flex: 0 0 190px;
+    scroll-snap-align: start;
+}
+
+.about-disco img {
+    width: 190px;
+    height: 190px;
+    object-fit: cover;
+    filter: grayscale(75%);
+    transition: 0.3s ease;
+}
+
+.about-disco:hover img {
+    filter: grayscale(0%);
+    transform: translateY(-5px);
+}
+
+.about-disco h4 {
+    font-family: var(--fonte-titulo);
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+.about-disco span {
+    font-family: var(--fonte-texto);
+    font-size: 10px;
+    color: #999;
+}
+
+/* =========================================
+   IDENTIDADE DE CADA FASE
+========================================= */
+
+/* INFÂNCIA */
+
+.infancia {
+    background: #e8e8e5;
+    color: #151515;
+}
+
+.infancia .about-foto-principal img {
+    filter: grayscale(60%) contrast(1.1);
+}
+
+.infancia .about-citacao {
+    background: #deded9;
+}
+
+/* HARDCORE */
+
+.hardcore {
+    background: #111;
+    color: #f5f5f5;
+}
+
+.hardcore .about-foto-principal img {
+    filter: grayscale(100%) contrast(1.5);
+}
+
+.hardcore .about-citacao {
+    background: #202020;
+}
+
+/* MELANCOLIA */
+
+.melancolia {
+    background: #cbd1d3;
+    color: #15191b;
+}
+
+.melancolia .about-foto-principal img {
+    filter: grayscale(100%) contrast(1.1);
+}
+
+.melancolia .about-citacao {
+    background: #bbc3c6;
+}
+
+/* POST-HARDCORE */
+
+.post-hardcore {
+    background: #e4e2df;
+    color: #171717;
+}
+
+.post-hardcore .about-foto-principal img {
+    filter: grayscale(85%) contrast(1.2);
+}
+
+.post-hardcore .about-citacao {
+    background: #d8d6d2;
+}
+
+/* INDIE UNDERGROUND */
+
+.indie {
+    background: #151515;
+    color: #f5f5f5;
+}
+
+.indie .about-foto-principal img {
+    filter: grayscale(100%) contrast(1.3);
+}
+
+.indie .about-citacao {
+    background: #222;
+}
+
+/* DEFTONES */
+
+.deftones {
+    background: #101c27;
+    color: #f5f5f5;
+}
+
+.deftones .about-foto-principal img {
+    filter: grayscale(40%) sepia(20%) hue-rotate(160deg) saturate(70%);
+}
+
+.deftones .about-citacao {
+    background: #172936;
+}
+
+/* HOJE */
+
+.hoje {
+    background: #e8e8e5;
+    color: #151515;
+}
+
+.hoje .about-foto-principal img {
+    filter: grayscale(50%) contrast(1.1);
+}
+
+.hoje .about-citacao {
+    background: #d9d9d5;
+}
+
+/* =========================================
+   ENCERRAMENTO
+========================================= */
+
+.about-final {
+    min-height: 75vh;
+    background: #8cbdd0;
+    color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 10%;
+    box-sizing: border-box;
+}
+
+.about-final-conteudo > span {
+    font-family: var(--fonte-texto);
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.about-final h2 {
+    font-family: var(--fonte-titulo);
+    font-size: clamp(55px, 9vw, 110px);
+    line-height: 0.85;
+    margin: 35px 0;
+}
+
+.about-final p {
+    font-family: var(--fonte-texto);
+    font-size: 13px;
+    margin-bottom: 35px;
+}
+
+.about-final a {
+    display: inline-block;
+    color: #111;
+    border: 1px solid #111;
+    padding: 15px 25px;
+    text-decoration: none;
+    font-family: var(--fonte-texto);
+    font-size: 12px;
+    transition: 0.3s;
+}
+
+.about-final a:hover {
+    background: #111;
+    color: #8cbdd0;
+}
+
+/* =========================================
+   RESPONSIVIDADE
+========================================= */
+
+@media screen and (max-width: 768px) {
+
+    .about-hero {
+        grid-template-columns: 1fr;
+        padding: 70px 7%;
+    }
+
+    .about-hero-foto {
+        height: 350px;
+    }
+
+    .about-hero-legenda {
+        left: 7%;
+    }
+
+    .about-section {
+        padding: 80px 7%;
+    }
+
+    .about-conteudo {
+        grid-template-columns: 1fr;
+        gap: 35px;
+    }
+
+    .about-foto-principal {
+        height: 350px;
+    }
+
+    .about-citacao {
+        padding: 25px 20px;
+    }
+
+    .about-disco {
+        flex-basis: 155px;
+    }
+
+    .about-disco img {
+        width: 155px;
+        height: 155px;
+    }
+
+    .about-final {
+        padding: 80px 7%;
+    }
+}
