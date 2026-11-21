@@ -1,0 +1,474 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SUBSOLO | Minha Sessão</title>
+
+    <link rel="stylesheet" href="./../css/dashboards.css">
+    <link rel="stylesheet" href="./../css/estilo.css">
+
+    <script src="../js/sessao.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body onload="validarSessao(), carregarManobras()">
+
+    <div class="janela">
+
+        <!-- MENU LATERAL -->
+        <div class="header-left dash-header">
+
+            <h1>SUBSOLO<span>_</span></h1>
+
+            <div class="hello">
+                <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
+                <p>SEU ESPAÇO PESSOAL</p>
+            </div>
+
+            <div class="btn-nav-white">
+                <a href="./cards.html">
+                    <h3>Meu Perfil</h3>
+                </a>
+            </div>
+
+            <div class="btn-nav">
+                <h3>Minha Sessão</h3>
+            </div>
+
+            <div class="btn-nav-white">
+                <a href="./manobras.html">
+                    <h3>Minhas Manobras</h3>
+                </a>
+            </div>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+
+        </div>
+
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="dash">
+
+            <div class="sessao-cabecalho">
+
+                <p class="sessao-legenda">PERSONAL ARCHIVE / SKATE LOG</p>
+
+                <h1>PREPARE SUA SESSÃO<span>.</span></h1>
+
+                <p>
+                    Escolha seu destino, separe a trilha sonora
+                    e defina o que você quer tentar hoje.
+                </p>
+
+            </div>
+
+
+            <!-- LOCAL E DATA -->
+            <div class="sessao-bloco">
+
+                <div class="sessao-titulo">
+                    <span>01 / DESTINO</span>
+                    <h2>ONDE VAMOS ANDAR?</h2>
+                </div>
+
+                <div class="sessao-campos">
+
+                    <div class="campo-sessao">
+                        <label for="local_sessao">LOCAL DA SESSÃO</label>
+
+                        <input
+                            type="text"
+                            id="local_sessao"
+                            placeholder="Ex: Praça Roosevelt, pista, street spot..."
+                            required
+                        >
+                    </div>
+
+                    <div class="campo-sessao">
+                        <label for="data_sessao">DATA</label>
+
+                        <input
+                            type="date"
+                            id="data_sessao"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TRILHA SONORA -->
+            <div class="sessao-bloco">
+
+                <div class="sessao-titulo">
+                    <span>02 / SOUNDTRACK</span>
+                    <h2>O QUE VAMOS ESCUTAR?</h2>
+                </div>
+
+                <div class="sessao-campos">
+
+                    <div class="campo-sessao">
+                        <label for="banda_sessao">BANDA / ARTISTA</label>
+
+                        <input
+                            type="text"
+                            id="banda_sessao"
+                            placeholder="Ex: Deftones"
+                        >
+                    </div>
+
+                    <div class="campo-sessao">
+                        <label for="album_sessao">ÁLBUM</label>
+
+                        <input
+                            type="text"
+                            id="album_sessao"
+                            placeholder="Ex: White Pony"
+                        >
+                    </div>
+
+                </div>
+
+                <p class="sessao-observacao">
+                    Toda sessão merece uma trilha sonora.
+                </p>
+
+            </div>
+
+
+            <!-- MANOBRAS -->
+            <div class="sessao-bloco">
+
+                <div class="sessao-titulo">
+                    <span>03 / TRICK LIST</span>
+                    <h2>O QUE VOCÊ QUER TENTAR?</h2>
+
+                    <p>
+                        Selecione as manobras que pretende praticar.
+                        Você poderá registrar as que conseguiu realizar.
+                    </p>
+                </div>
+
+                <div id="lista_manobras_sessao" class="lista-manobras-sessao">
+
+                    <!-- Manobras cadastradas aparecem aqui -->
+
+                </div>
+
+                <div id="aviso_manobras" class="aviso-manobras">
+                    <p>VOCÊ AINDA NÃO CADASTROU NENHUMA MANOBRA.</p>
+
+                    <a href="./manobras.html">
+                        CADASTRAR MANOBRAS →
+                    </a>
+                </div>
+
+            </div>
+
+
+            <!-- OBSERVAÇÕES -->
+            <div class="sessao-bloco">
+
+                <div class="sessao-titulo">
+                    <span>04 / NOTES</span>
+                    <h2>ANOTAÇÕES DA SESSÃO</h2>
+                </div>
+
+                <div class="campo-sessao">
+                    <label for="observacoes_sessao">O QUE VOCÊ QUER REGISTRAR?</label>
+
+                    <textarea
+                        id="observacoes_sessao"
+                        rows="4"
+                        placeholder="Uma manobra que quero acertar, um lugar novo, uma ideia..."
+                    ></textarea>
+                </div>
+
+            </div>
+
+
+            <!-- FINALIZAR -->
+            <div class="sessao-acoes">
+
+                <p>
+                    NÃO PRECISA ACERTAR DE PRIMEIRA.
+                    CAIA, LEVANTE E TENTE DE NOVO.
+                </p>
+
+                <button onclick="salvarSessao()">
+                    REGISTRAR SESSÃO →
+                </button>
+
+            </div>
+
+
+            <div class="perfil-footer">
+                <p>SUBSOLO_ — DIY FOREVER.</p>
+                <p>SKATE / MUSIC / UNDERGROUND CULTURE</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+
+<script>
+
+    // Identifica o usuário atual para separar os dados de cada conta.
+    function identificarUsuario() {
+
+        return sessionStorage.ID_USUARIO ||
+            sessionStorage.EMAIL_USUARIO ||
+            "usuario";
+    }
+
+
+    // Define a chave de armazenamento das manobras.
+    function chaveManobras() {
+
+        return "MANOBRAS_" + identificarUsuario();
+    }
+
+
+    // Define a chave de armazenamento das sessões.
+    function chaveSessoes() {
+
+        return "HISTORICO_SESSOES_" + identificarUsuario();
+    }
+
+
+    // Evita inserir conteúdo digitado diretamente como HTML.
+    function escaparHTML(texto) {
+
+        return String(texto || "").replace(/[&<>"']/g, function (caractere) {
+
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[caractere];
+
+        });
+    }
+
+
+    // Carrega o nome do usuário e a data atual.
+    function carregarManobras() {
+
+        document.getElementById("b_usuario").innerHTML =
+            sessionStorage.NOME_USUARIO || "usuário";
+
+        var hoje = new Date();
+
+        var dataLocal = new Date(
+            hoje.getTime() - hoje.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
+
+        document.getElementById("data_sessao").value = dataLocal;
+
+        exibirManobras();
+
+    }
+
+
+    // Busca as manobras cadastradas na outra aba.
+    function exibirManobras() {
+
+        var manobras = JSON.parse(
+            localStorage.getItem(chaveManobras())
+        ) || [];
+
+        var lista = document.getElementById("lista_manobras_sessao");
+        var aviso = document.getElementById("aviso_manobras");
+
+        lista.innerHTML = "";
+
+        if (manobras.length === 0) {
+
+            aviso.style.display = "block";
+            return;
+
+        }
+
+        aviso.style.display = "none";
+
+        manobras.forEach(function (manobra, indice) {
+
+            var nome = typeof manobra === "string"
+                ? manobra
+                : manobra.nome;
+
+            var categoria = typeof manobra === "string"
+                ? "Manobra"
+                : manobra.categoria || "Manobra";
+
+            lista.innerHTML += `
+                <div class="manobra-sessao-item">
+
+                    <div class="manobra-sessao-info">
+                        <h3>${escaparHTML(nome)}</h3>
+                        <p>${escaparHTML(categoria)}</p>
+                    </div>
+
+                    <label class="check-manobra">
+                        <input
+                            type="checkbox"
+                            class="manobra-planejada"
+                            value="${indice}"
+                        >
+                        <span>QUERO TENTAR</span>
+                    </label>
+
+                    <label class="check-manobra check-concluida">
+                        <input
+                            type="checkbox"
+                            class="manobra-concluida"
+                            value="${indice}"
+                            disabled
+                        >
+                        <span>CONSEGUI</span>
+                    </label>
+
+                </div>
+            `;
+
+        });
+
+        // Só permite marcar como concluída uma manobra selecionada.
+        document.querySelectorAll(".manobra-planejada").forEach(function (checkbox) {
+
+            checkbox.addEventListener("change", function () {
+
+                var item = checkbox.closest(".manobra-sessao-item");
+
+                var concluida = item.querySelector(".manobra-concluida");
+
+                concluida.disabled = !checkbox.checked;
+
+                if (!checkbox.checked) {
+                    concluida.checked = false;
+                }
+
+            });
+
+        });
+
+    }
+
+
+    // Registra a sessão no histórico do usuário.
+    function salvarSessao() {
+
+        var local = document.getElementById("local_sessao").value.trim();
+        var data = document.getElementById("data_sessao").value;
+
+        var banda = document.getElementById("banda_sessao").value.trim();
+        var album = document.getElementById("album_sessao").value.trim();
+
+        var observacoes = document.getElementById("observacoes_sessao").value.trim();
+
+        if (local === "") {
+            alert("Escolha o local da sua sessão!");
+            return;
+        }
+
+        if (data === "") {
+            alert("Escolha a data da sessão!");
+            return;
+        }
+
+        var manobras = JSON.parse(
+            localStorage.getItem(chaveManobras())
+        ) || [];
+
+        var planejadas = [];
+        var concluidas = [];
+
+        document.querySelectorAll(".manobra-planejada:checked").forEach(function (checkbox) {
+
+            var indice = Number(checkbox.value);
+            var manobra = manobras[indice];
+
+            if (!manobra) return;
+
+            var nome = typeof manobra === "string"
+                ? manobra
+                : manobra.nome;
+
+            planejadas.push(nome);
+
+            var item = checkbox.closest(".manobra-sessao-item");
+
+            if (item.querySelector(".manobra-concluida").checked) {
+                concluidas.push(nome);
+            }
+
+        });
+
+        if (planejadas.length === 0) {
+            alert("Selecione pelo menos uma manobra para sua sessão!");
+            return;
+        }
+
+        var historico = JSON.parse(
+            localStorage.getItem(chaveSessoes())
+        ) || [];
+
+        var novaSessao = {
+
+            id: Date.now(),
+
+            data: data,
+
+            local: local,
+
+            banda: banda,
+
+            album: album,
+
+            manobras: planejadas.join(", "),
+
+            listaManobras: planejadas,
+
+            manobrasConcluidas: concluidas,
+
+            observacoes: observacoes,
+
+            finalizada: true
+
+        };
+
+        historico.unshift(novaSessao);
+
+        localStorage.setItem(
+            chaveSessoes(),
+            JSON.stringify(historico)
+        );
+
+        alert("Sessão registrada! Continue andando e evoluindo.");
+
+        window.location.href = "./dashboard.html";
+
+    }
+
+</script>
+
+</html>
