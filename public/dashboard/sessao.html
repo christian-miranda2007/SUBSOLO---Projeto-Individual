@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -36,7 +35,7 @@
             </div>
 
             <div class="btn-nav-white">
-                <a href="./cards.html">
+                <a href="./perfil.html">
                     <h3>Meu Perfil</h3>
                 </a>
             </div>
@@ -124,21 +123,17 @@
                     <div class="campo-sessao">
                         <label for="banda_sessao">BANDA / ARTISTA</label>
 
-                        <input
-                            type="text"
-                            id="banda_sessao"
-                            placeholder="Ex: Deftones"
-                        >
+                        <select id="banda_sessao" onchange="carregarAlbuns()">
+                            <option value="">Selecione a banda</option>
+                        </select>
                     </div>
 
                     <div class="campo-sessao">
                         <label for="album_sessao">ÁLBUM</label>
 
-                        <input
-                            type="text"
-                            id="album_sessao"
-                            placeholder="Ex: White Pony"
-                        >
+                        <select id="album_sessao">
+                            <option value="">Selecione primeiro a banda</option>
+                        </select>
                     </div>
 
                 </div>
@@ -230,27 +225,7 @@
 
 <script>
 
-    // Identifica o usuário atual para separar os dados de cada conta.
-    function identificarUsuario() {
-
-        return sessionStorage.ID_USUARIO ||
-            sessionStorage.EMAIL_USUARIO ||
-            "usuario";
-    }
-
-
-    // Define a chave de armazenamento das manobras.
-    function chaveManobras() {
-
-        return "MANOBRAS_" + identificarUsuario();
-    }
-
-
-    // Define a chave de armazenamento das sessões.
-    function chaveSessoes() {
-
-        return "HISTORICO_SESSOES_" + identificarUsuario();
-    }
+    var idUsuario = sessionStorage.ID_USUARIO;
 
 
     // Evita inserir conteúdo digitado diretamente como HTML.
@@ -270,7 +245,7 @@
     }
 
 
-    // Carrega o nome do usuário e a data atual.
+    // Carrega o nome do usuário, a data atual, as bandas e as manobras.
     function carregarManobras() {
 
         document.getElementById("b_usuario").innerHTML =
@@ -284,17 +259,100 @@
 
         document.getElementById("data_sessao").value = dataLocal;
 
+        carregarBandas();
         exibirManobras();
 
     }
 
 
-    // Busca as manobras cadastradas na outra aba.
+    // Preenche o select com as bandas pré-cadastradas.
+    function carregarBandas() {
+
+        fetch("/bandas/listar")
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(function (bandas) {
+
+                        var select = document.getElementById("banda_sessao");
+
+                        bandas.forEach(function (banda) {
+                            select.innerHTML += `
+                                <option value="${banda.id_banda}">${escaparHTML(banda.nome_banda)}</option>
+                            `;
+                        });
+
+                    });
+                } else {
+                    throw ("Houve um erro ao listar as bandas! Código da resposta: " + resposta.status);
+                }
+
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+
+    }
+
+
+    // Preenche o select de álbuns de acordo com a banda escolhida.
+    function carregarAlbuns() {
+
+        var idBanda = document.getElementById("banda_sessao").value;
+        var select = document.getElementById("album_sessao");
+
+        if (idBanda === "") {
+            select.innerHTML = `<option value="">Selecione primeiro a banda</option>`;
+            return;
+        }
+
+        select.innerHTML = `<option value="">Selecione o álbum</option>`;
+
+        fetch(`/bandas/albuns/${idBanda}`)
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(function (albuns) {
+
+                        albuns.forEach(function (album) {
+                            select.innerHTML += `
+                                <option value="${album.id_album}">${escaparHTML(album.titulo)}</option>
+                            `;
+                        });
+
+                    });
+                } else {
+                    throw ("Houve um erro ao listar os álbuns! Código da resposta: " + resposta.status);
+                }
+
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+
+    }
+
+
+    // Busca as manobras cadastradas pelo usuário.
     function exibirManobras() {
 
-        var manobras = JSON.parse(
-            localStorage.getItem(chaveManobras())
-        ) || [];
+        fetch(`/manobras/listar/${idUsuario}`)
+            .then(function (resposta) {
+
+                if (resposta.ok) {
+                    resposta.json().then(function (manobras) {
+                        montarListaManobras(manobras);
+                    });
+                } else {
+                    throw ("Houve um erro ao listar as manobras! Código da resposta: " + resposta.status);
+                }
+
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+
+    }
+
+
+    function montarListaManobras(manobras) {
 
         var lista = document.getElementById("lista_manobras_sessao");
         var aviso = document.getElementById("aviso_manobras");
@@ -310,29 +368,21 @@
 
         aviso.style.display = "none";
 
-        manobras.forEach(function (manobra, indice) {
-
-            var nome = typeof manobra === "string"
-                ? manobra
-                : manobra.nome;
-
-            var categoria = typeof manobra === "string"
-                ? "Manobra"
-                : manobra.categoria || "Manobra";
+        manobras.forEach(function (manobra) {
 
             lista.innerHTML += `
                 <div class="manobra-sessao-item">
 
                     <div class="manobra-sessao-info">
-                        <h3>${escaparHTML(nome)}</h3>
-                        <p>${escaparHTML(categoria)}</p>
+                        <h3>${escaparHTML(manobra.nome_trick)}</h3>
+                        <p>${escaparHTML(manobra.categoria || "Manobra")}</p>
                     </div>
 
                     <label class="check-manobra">
                         <input
                             type="checkbox"
                             class="manobra-planejada"
-                            value="${indice}"
+                            value="${manobra.id_manobra}"
                         >
                         <span>QUERO TENTAR</span>
                     </label>
@@ -341,7 +391,7 @@
                         <input
                             type="checkbox"
                             class="manobra-concluida"
-                            value="${indice}"
+                            value="${manobra.id_manobra}"
                             disabled
                         >
                         <span>CONSEGUI</span>
@@ -374,14 +424,13 @@
     }
 
 
-    // Registra a sessão no histórico do usuário.
+    // Registra a sessão no banco.
     function salvarSessao() {
 
         var local = document.getElementById("local_sessao").value.trim();
         var data = document.getElementById("data_sessao").value;
 
-        var banda = document.getElementById("banda_sessao").value.trim();
-        var album = document.getElementById("album_sessao").value.trim();
+        var idAlbum = document.getElementById("album_sessao").value;
 
         var observacoes = document.getElementById("observacoes_sessao").value.trim();
 
@@ -395,77 +444,53 @@
             return;
         }
 
-        var manobras = JSON.parse(
-            localStorage.getItem(chaveManobras())
-        ) || [];
-
-        var planejadas = [];
-        var concluidas = [];
+        var manobras = [];
 
         document.querySelectorAll(".manobra-planejada:checked").forEach(function (checkbox) {
 
-            var indice = Number(checkbox.value);
-            var manobra = manobras[indice];
-
-            if (!manobra) return;
-
-            var nome = typeof manobra === "string"
-                ? manobra
-                : manobra.nome;
-
-            planejadas.push(nome);
-
             var item = checkbox.closest(".manobra-sessao-item");
 
-            if (item.querySelector(".manobra-concluida").checked) {
-                concluidas.push(nome);
-            }
+            manobras.push({
+                idManobra: Number(checkbox.value),
+                finalizado: item.querySelector(".manobra-concluida").checked ? 1 : 0
+            });
 
         });
 
-        if (planejadas.length === 0) {
+        if (manobras.length === 0) {
             alert("Selecione pelo menos uma manobra para sua sessão!");
             return;
         }
 
-        var historico = JSON.parse(
-            localStorage.getItem(chaveSessoes())
-        ) || [];
+        fetch("/sessoes/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: idUsuario,
+                localServer: local,
+                dataServer: data,
+                idAlbumServer: idAlbum,
+                manobrasServer: manobras,
+                observacoesServer: observacoes
+            })
+        }).then(function (resposta) {
 
-        var novaSessao = {
+            if (resposta.ok) {
 
-            id: Date.now(),
+                alert("Sessão registrada! Continue andando e evoluindo.");
 
-            data: data,
+                window.location.href = "./dashboard/perfil.html";
 
-            local: local,
+            } else {
+                throw ("Houve um erro ao registrar a sessão! Código da resposta: " + resposta.status);
+            }
 
-            banda: banda,
-
-            album: album,
-
-            manobras: planejadas.join(", "),
-
-            listaManobras: planejadas,
-
-            manobrasConcluidas: concluidas,
-
-            observacoes: observacoes,
-
-            finalizada: true
-
-        };
-
-        historico.unshift(novaSessao);
-
-        localStorage.setItem(
-            chaveSessoes(),
-            JSON.stringify(historico)
-        );
-
-        alert("Sessão registrada! Continue andando e evoluindo.");
-
-        window.location.href = "./dashboard.html";
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+            alert("Não foi possível registrar a sessão. Tente novamente.");
+        });
 
     }
 

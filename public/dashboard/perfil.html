@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
+ 
 <head>
     <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUBSOLO | Meu perfil</title>
-
-
+ 
+ 
     <link rel="stylesheet" href="./../css/dashboards.css">
     <link rel="stylesheet" href="./../css/estilo.css" />
-
+ 
     <script src="../js/sessao.js"></script>
     <script src="../js/alerta.js"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -19,183 +19,217 @@
         href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
 </head>
-
-
-
+ 
+ 
+ 
 <body onload="validarSessao(), carregarPerfil()">
-
+ 
     <div class="janela">
-
+ 
         <div class="header-left dash-header">
-
-            <h1>AquaTech</h1>
-
+ 
+            <h1>SUBSOLO</h1>
+ 
             <div class="hello">
                 <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
             </div>
-
+ 
             <div class="btn-nav">
                 <h3>Meu perfil</h3>
             </div>
-
+ 
             <div class="btn-nav-white">
                 <a href="./sessao.html">
                     <h3>Minha Sessão</h3>
                 </a>
             </div>
-
+ 
             <div class="btn-nav-white">
                 <a href="./manobras.html">
                     <h3>Minhas Manobras</h3>
                 </a>
             </div>
-
+ 
             <div class="btn-logout" onclick="limparSessao()">
                 <h3>Sair</h3>
             </div>
-
+ 
         </div>
-
+ 
         <div class="dash">
             <div id="perfil-cabecalho">
             </div>
     
-
+ 
           <div class="perfil-card">
-
+ 
                 <div class="perfil-imagem">
                     <span>SUB</span>
                 </div>
-
+ 
                 <div class="perfil-informacoes">
-
+ 
                     <p class="perfil-legenda">SKATER PROFILE</p>
-
+ 
                     <h2 id="perfil_nome">Nome do usuário</h2>
-
+ 
                     <div class="perfil-dados">
-
+ 
                         <div>
                             <p>NOME</p>
                             <span id="perfil_nome_dado">-</span>
                         </div>
-
+ 
                         <div>
                             <p>E-MAIL</p>
                             <span id="perfil_email">-</span>
                         </div>
-
+ 
                     </div>
-
+ 
                 </div>
-
+ 
             </div>
-
+ 
                <div class="historico-area">
-
+ 
                 <div class="historico-cabecalho">
                     <div>
                         <p class="perfil-legenda">SEU CAMINHO NO SKATE</p>
                         <h2>HISTÓRICO DE SESSÕES</h2>
                     </div>
-
+ 
                     <span class="historico-numero" id="total_sessoes">00 SESSÕES</span>
                 </div>
-
-
+ 
+ 
                 <div class="historico-lista" id="lista_sessoes">
-
+ 
                     <!-- As sessões serão carregadas aqui -->
-
+ 
                     <div class="sessao-vazia">
                         <h3>NENHUMA SESSÃO REGISTRADA.</h3>
                         <p>
                             Sua trajetória começa na próxima sessão.
                             Prepare seu skate, escolha um álbum e vá para a rua.
                         </p>
-
+ 
                         <a href="./sessao.html">PLANEJAR PRIMEIRA SESSÃO →</a>
                     </div>
-
+ 
                 </div>
-
+ 
             </div>
-
-
-
-
+ 
+ 
+ 
+ 
 </body>
-
+ 
 <script>
-
+ 
     function carregarPerfil() {
-
+ 
        
         let nome = sessionStorage.NOME_USUARIO;
         let email = sessionStorage.EMAIL_USUARIO;
-
+ 
         if (nome) {
             document.getElementById("b_usuario").innerHTML = nome;
             document.getElementById("perfil_nome").innerHTML = nome;
             document.getElementById("perfil_nome_dado").innerHTML = nome;
         }
-
+ 
         if (email) {
             document.getElementById("perfil_email").innerHTML = email;
         }
-
+ 
         carregarHistorico();
     }
-
-
+ 
+ 
+    // Evita inserir conteúdo digitado diretamente como HTML.
+    function escaparHTML(texto) {
+ 
+        return String(texto || "").replace(/[&<>"']/g, function (caractere) {
+ 
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[caractere];
+ 
+        });
+    }
+ 
+ 
     function carregarHistorico() {
-
-        // Recupera o histórico de sessões do navegador
-        let historico = JSON.parse(
-            localStorage.getItem("HISTORICO_SESSOES")
-        ) || [];
-
+ 
+        fetch(`/sessoes/listar/${sessionStorage.ID_USUARIO}`)
+            .then(function (resposta) {
+ 
+                if (resposta.ok) {
+                    resposta.json().then(function (historico) {
+                        exibirHistorico(historico);
+                    });
+                } else {
+                    throw ("Houve um erro ao buscar o histórico! Código da resposta: " + resposta.status);
+                }
+ 
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+ 
+    }
+ 
+ 
+    function exibirHistorico(historico) {
+ 
         document.getElementById("total_sessoes").innerHTML =
             historico.length.toString().padStart(2, "0") + " SESSÕES";
-
+ 
         let lista = document.getElementById("lista_sessoes");
-
+ 
         if (historico.length === 0) {
             return console.log('não há historico');
         }
-
+ 
         lista.innerHTML = "";
-
+ 
         historico.forEach(function (sessao) {
-
+ 
             lista.innerHTML += `
                 <div class="sessao-item">
-
+ 
                     <div class="sessao-data">
                         <span>${sessao.data}</span>
                     </div>
-
+ 
                     <div class="sessao-detalhes">
-
-                        <h3>${sessao.local}</h3>
-
-                        <p>ÁLBUM: ${sessao.album || "Não informado"}</p>
-
-                        <p>MANOBRAS: ${sessao.manobras || "Não informadas"}</p>
-
+ 
+                        <h3>${escaparHTML(sessao.lugar)}</h3>
+ 
+                        <p>ÁLBUM: ${escaparHTML(sessao.banda_album) || "Não informado"}</p>
+ 
+                        <p>MANOBRAS: ${escaparHTML(sessao.manobras) || "Não informadas"}</p>
+ 
+                        <p>ACERTOS: ${escaparHTML(sessao.acertos) || "Nenhum"}</p>
+ 
                     </div>
-
+ 
                     <div class="sessao-status">
                         <span>FINALIZADA</span>
                     </div>
-
+ 
                 </div>
             `;
-
+ 
         });
-
+ 
     }
-
+ 
 </script>
-
+ 
 </html>

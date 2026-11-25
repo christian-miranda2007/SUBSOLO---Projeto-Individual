@@ -1,66 +1,66 @@
-
+ 
 <!DOCTYPE html>
 <html lang="pt-br">
-
+ 
 <head>
     <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ 
     <title>SUBSOLO | Manobras</title>
-
+ 
     <link rel="stylesheet" href="./../css/dashboards.css">
     <link rel="stylesheet" href="./../css/estilo.css">
-
+ 
     <script src="../js/sessao.js"></script>
-
+ 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap"
         rel="stylesheet">
 </head>
-
+ 
 <body onload="validarSessao(), carregarManobras()" style="background-color: #111111;">
-
+ 
     <div class="janela">
-
+ 
         <div class="header-left">
-
+ 
             <h1>SUBSOLO</h1>
-
+ 
             <div class="hello">
                 <h3>Olá, <span id="b_usuario">skater</span>!</h3>
             </div>
-
+ 
             <div class="btn-nav-white">
-                <a href="./cards.html">
+                <a href="./perfil.html">
                     <h3>Meu Perfil</h3>
                 </a>
             </div>
-
+ 
             <div class="btn-nav-white">
                 <a href="./sessao.html">
                     <h3>Minha Sessão</h3>
                 </a>
             </div>
-
+ 
             <div class="btn-nav">
                 <h3>Minhas Manobras</h3>
             </div>
-
+ 
             <div class="btn-logout" onclick="limparSessao()">
                 <h3>Sair</h3>
             </div>
-
+ 
         </div>
-
+ 
         <div class="dash-right">
-
+ 
             <div class="manobras-container">
-
+ 
                 <div id="alerta"></div>
-
+ 
                 <div class="manobras-cabecalho">
                     <span class="manobras-etiqueta">SUBSOLO / ARQUIVO PESSOAL</span>
                     <h1>MINHAS MANOBRAS<span>.</span></h1>
@@ -70,18 +70,18 @@
                         e acompanhe sua própria evolução.
                     </p>
                 </div>
-
+ 
                 <div class="manobras-formulario">
-
+ 
                     <div class="manobras-titulo-bloco">
                         <span>01 / CADASTRO</span>
                         <h2>Adicionar manobra</h2>
                     </div>
-
+ 
                     <form id="form_manobra" onsubmit="return cadastrarManobra()">
-
+ 
                         <div class="manobras-campos">
-
+ 
                             <div class="campo-manobra">
                                 <label for="nome_manobra">Nome da manobra</label>
                                 <input
@@ -91,10 +91,10 @@
                                     placeholder="Ex: Kickflip"
                                     required>
                             </div>
-
+ 
                             <div class="campo-manobra">
                                 <label for="categoria_manobra">Categoria</label>
-
+ 
                                 <select id="categoria_manobra" required>
                                     <option value="">Selecione uma categoria</option>
                                     <option value="Flatground">Flatground</option>
@@ -107,16 +107,26 @@
                                     <option value="Outras">Outras</option>
                                 </select>
                             </div>
-
+ 
+                            <div class="campo-manobra">
+                                <label for="status_manobra">Status</label>
+ 
+                                <select id="status_manobra" required>
+                                    <option value="">Selecione o status</option>
+                                    <option value="ja_faco">Já faço</option>
+                                    <option value="vou_aprender">Vou aprender</option>
+                                </select>
+                            </div>
+ 
                         </div>
-
+ 
                         <input type="hidden" id="id_manobra_editando">
-
+ 
                         <div class="manobras-acoes">
                             <button type="submit" id="btn_salvar_manobra">
                                 ADICIONAR MANOBRA +
                             </button>
-
+ 
                             <button
                                 type="button"
                                 id="btn_cancelar_edicao"
@@ -125,128 +135,147 @@
                                 CANCELAR
                             </button>
                         </div>
-
+ 
                     </form>
-
+ 
                 </div>
-
+ 
                 <div class="manobras-listagem">
-
+ 
                     <div class="manobras-titulo-bloco">
                         <span>02 / COLEÇÃO</span>
                         <h2>Meu repertório</h2>
                         <p id="contador_manobras">0 MANOBRAS REGISTRADAS</p>
                     </div>
-
+ 
                     <div id="lista_manobras" class="lista-manobras">
-
+ 
                     </div>
-
+ 
                 </div>
-
+ 
             </div>
-
+ 
         </div>
-
+ 
     </div>
-
+ 
     <script>
-
-        const identificadorUsuario =
-            sessionStorage.ID_USUARIO ||
-            sessionStorage.EMAIL_USUARIO ||
-            "usuario";
-
-        const chaveManobras = "MANOBRAS_" + identificadorUsuario;
-
+ 
+        const idUsuario = sessionStorage.ID_USUARIO;
+ 
+        const textoStatus = {
+            ja_faco: "JÁ FAÇO",
+            vou_aprender: "VOU APRENDER"
+        };
+ 
+        let manobras = [];
+ 
         b_usuario.innerHTML = sessionStorage.NOME_USUARIO || "skater";
-
+ 
         function carregarManobras() {
-            exibirManobras();
+ 
+            fetch(`/manobras/listar/${idUsuario}`)
+                .then(function (resposta) {
+ 
+                    if (resposta.ok) {
+                        resposta.json().then(function (json) {
+                            manobras = json;
+                            exibirManobras();
+                        });
+                    } else {
+                        throw ("Houve um erro ao listar as manobras! Código da resposta: " + resposta.status);
+                    }
+ 
+                }).catch(function (erro) {
+                    console.log(`#ERRO: ${erro}`);
+                });
+ 
         }
-
-        function obterManobras() {
-            return JSON.parse(localStorage.getItem(chaveManobras)) || [];
-        }
-
-        function salvarManobras(manobras) {
-            localStorage.setItem(chaveManobras, JSON.stringify(manobras));
-        }
-
+ 
         function cadastrarManobra() {
-
+ 
             const nome = document.getElementById("nome_manobra").value.trim();
             const categoria = document.getElementById("categoria_manobra").value;
+            const status = document.getElementById("status_manobra").value;
             const idEditando = document.getElementById("id_manobra_editando").value;
-
-            if (!nome || !categoria) {
-                alert("Preencha o nome e a categoria da manobra.");
+ 
+            if (!nome || !categoria || !status) {
+                alert("Preencha o nome, a categoria e o status da manobra.");
                 return false;
             }
-
-            const manobras = obterManobras();
-
+ 
             if (idEditando) {
-
-                const indice = manobras.findIndex(
-                    manobra => String(manobra.id) === idEditando
-                );
-
-                if (indice !== -1) {
-                    manobras[indice].nome = nome;
-                    manobras[indice].categoria = categoria;
-                }
-
-                alert("Manobra atualizada!");
-
-            } else {
-
-                const nomeExiste = manobras.some(
-                    manobra => manobra.nome.toLowerCase() === nome.toLowerCase()
-                );
-
-                if (nomeExiste) {
-                    alert("Essa manobra já está cadastrada.");
-                    return false;
-                }
-
-                manobras.push({
-                    id: Date.now(),
-                    nome: nome,
-                    categoria: categoria
+ 
+                // Na edição só o status muda: nome e categoria fazem parte do catálogo
+                fetch(`/manobras/editar/${idUsuario}/${idEditando}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        statusServer: status
+                    })
+                }).then(function (resposta) {
+ 
+                    if (resposta.ok) {
+                        alert("Manobra atualizada!");
+                        limparFormulario();
+                        carregarManobras();
+                    } else {
+                        throw ("Houve um erro ao atualizar a manobra! Código da resposta: " + resposta.status);
+                    }
+ 
+                }).catch(function (erro) {
+                    console.log(`#ERRO: ${erro}`);
                 });
-
-                alert("Manobra cadastrada com sucesso!");
+ 
+            } else {
+ 
+                fetch("/manobras/cadastrar", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        idUsuarioServer: idUsuario,
+                        nomeServer: nome,
+                        categoriaServer: categoria,
+                        statusServer: status
+                    })
+                }).then(function (resposta) {
+ 
+                    if (resposta.ok) {
+                        alert("Manobra cadastrada com sucesso!");
+                        limparFormulario();
+                        carregarManobras();
+                    } else if (resposta.status == 409) {
+                        alert("Essa manobra já está cadastrada.");
+                    } else {
+                        throw ("Houve um erro ao cadastrar a manobra! Código da resposta: " + resposta.status);
+                    }
+ 
+                }).catch(function (erro) {
+                    console.log(`#ERRO: ${erro}`);
+                });
+ 
             }
-
-            salvarManobras(manobras);
-
-            document.getElementById("form_manobra").reset();
-            document.getElementById("id_manobra_editando").value = "";
-
-            document.getElementById("btn_salvar_manobra").innerText =
-                "ADICIONAR MANOBRA +";
-
-            document.getElementById("btn_cancelar_edicao").style.display = "none";
-
-            exibirManobras();
-
+ 
             return false;
         }
-
+ 
         function exibirManobras() {
-
-            const manobras = obterManobras();
+ 
             const lista = document.getElementById("lista_manobras");
             const contador = document.getElementById("contador_manobras");
-
+ 
             lista.innerHTML = "";
-
+ 
             contador.innerText =
                 manobras.length + " MANOBRA(S) REGISTRADA(S)";
-
+ 
             if (manobras.length === 0) {
-
+ 
                 lista.innerHTML = `
                     <div class="manobras-vazio">
                         <span>ARQUIVO VAZIO / 001</span>
@@ -257,109 +286,128 @@
                         </p>
                     </div>
                 `;
-
+ 
                 return;
             }
-
+ 
             manobras.forEach(function (manobra) {
-
+ 
                 const item = document.createElement("div");
                 item.className = "manobra-card";
-
+ 
                 const informacoes = document.createElement("div");
                 informacoes.className = "manobra-informacoes";
-
+ 
                 const categoria = document.createElement("span");
                 categoria.className = "manobra-categoria";
-                categoria.innerText = manobra.categoria;
-
+                categoria.innerText =
+                    (manobra.categoria || "Manobra") + " / " + textoStatus[manobra.statuss];
+ 
                 const nome = document.createElement("h3");
-                nome.innerText = manobra.nome;
-
+                nome.innerText = manobra.nome_trick;
+ 
                 informacoes.appendChild(categoria);
                 informacoes.appendChild(nome);
-
+ 
                 const acoes = document.createElement("div");
                 acoes.className = "manobra-acoes-card";
-
+ 
                 const editar = document.createElement("button");
                 editar.innerText = "EDITAR";
                 editar.onclick = function () {
-                    editarManobra(manobra.id);
+                    editarManobra(manobra.id_manobra);
                 };
-
+ 
                 const excluir = document.createElement("button");
                 excluir.innerText = "EXCLUIR";
                 excluir.onclick = function () {
-                    excluirManobra(manobra.id);
+                    excluirManobra(manobra.id_manobra);
                 };
-
+ 
                 acoes.appendChild(editar);
                 acoes.appendChild(excluir);
-
+ 
                 item.appendChild(informacoes);
                 item.appendChild(acoes);
-
+ 
                 lista.appendChild(item);
-
+ 
             });
         }
-
+ 
         function editarManobra(id) {
-
-            const manobras = obterManobras();
-
+ 
             const manobra = manobras.find(
-                item => String(item.id) === String(id)
+                item => String(item.id_manobra) === String(id)
             );
-
+ 
             if (!manobra) return;
-
-            document.getElementById("nome_manobra").value = manobra.nome;
-            document.getElementById("categoria_manobra").value = manobra.categoria;
-            document.getElementById("id_manobra_editando").value = manobra.id;
-
+ 
+            document.getElementById("nome_manobra").value = manobra.nome_trick;
+            document.getElementById("categoria_manobra").value = manobra.categoria || "";
+            document.getElementById("status_manobra").value = manobra.statuss;
+            document.getElementById("id_manobra_editando").value = manobra.id_manobra;
+ 
+            // Nome e categoria ficam bloqueados: só o status pode ser alterado
+            document.getElementById("nome_manobra").disabled = true;
+            document.getElementById("categoria_manobra").disabled = true;
+ 
             document.getElementById("btn_salvar_manobra").innerText =
                 "SALVAR ALTERAÇÕES";
-
+ 
             document.getElementById("btn_cancelar_edicao").style.display =
                 "inline-block";
-
-            document.getElementById("nome_manobra").focus();
-
+ 
+            document.getElementById("status_manobra").focus();
+ 
         }
-
-        function cancelarEdicao() {
-
+ 
+        function limparFormulario() {
+ 
             document.getElementById("form_manobra").reset();
             document.getElementById("id_manobra_editando").value = "";
-
+ 
+            document.getElementById("nome_manobra").disabled = false;
+            document.getElementById("categoria_manobra").disabled = false;
+ 
             document.getElementById("btn_salvar_manobra").innerText =
                 "ADICIONAR MANOBRA +";
-
+ 
             document.getElementById("btn_cancelar_edicao").style.display =
                 "none";
         }
-
+ 
+        function cancelarEdicao() {
+            limparFormulario();
+        }
+ 
         function excluirManobra(id) {
-
+ 
             const confirmar = confirm(
                 "Deseja realmente excluir essa manobra?"
             );
-
+ 
             if (!confirmar) return;
-
-            const manobras = obterManobras().filter(
-                manobra => String(manobra.id) !== String(id)
-            );
-
-            salvarManobras(manobras);
-            exibirManobras();
-
+ 
+            fetch(`/manobras/excluir/${idUsuario}/${id}`, {
+                method: "DELETE"
+            }).then(function (resposta) {
+ 
+                if (resposta.ok) {
+                    carregarManobras();
+                } else {
+                    throw ("Houve um erro ao excluir a manobra! Código da resposta: " + resposta.status);
+                }
+ 
+            }).catch(function (erro) {
+                console.log(`#ERRO: ${erro}`);
+            });
+ 
         }
-
+ 
     </script>
-
+ 
 </body>
-
+ 
 </html>
+ 
