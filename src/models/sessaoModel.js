@@ -34,11 +34,12 @@ function cadastrarAlbum(idSessao, idAlbum) {
 
 function cadastrarManobras(idSessao, manobras) {
     var valores = manobras.map(function (manobra) {
-        return `(${idSessao}, ${manobra.idManobra}, ${manobra.finalizado})`;
+        var finalizado = manobra.vezes > 0 ? 1 : 0;
+        return `(${idSessao}, ${manobra.idManobra}, ${finalizado}, ${manobra.vezes})`;
     }).join(", ");
 
     var instrucaoSql = `
-        INSERT INTO sessoes_manobras (id_sessao, id_manobra, finalizado) VALUES ${valores};
+        INSERT INTO sessoes_manobras (id_sessao, id_manobra, finalizado, vezes) VALUES ${valores};
     `;
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
