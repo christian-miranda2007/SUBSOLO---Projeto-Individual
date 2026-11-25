@@ -57,7 +57,7 @@
         </div>
 
 
-        <!-- CONTEÚDO PRINCIPAL -->
+    
         <div class="dash">
 
             <div class="sessao-cabecalho">
@@ -74,7 +74,7 @@
             </div>
 
 
-            <!-- LOCAL E DATA -->
+          
             <div class="sessao-bloco">
 
                 <div class="sessao-titulo">
@@ -110,7 +110,7 @@
             </div>
 
 
-            <!-- TRILHA SONORA -->
+      
             <div class="sessao-bloco">
 
                 <div class="sessao-titulo">
@@ -145,7 +145,7 @@
             </div>
 
 
-            <!-- MANOBRAS -->
+      
             <div class="sessao-bloco">
 
                 <div class="sessao-titulo">
@@ -160,7 +160,6 @@
 
                 <div id="lista_manobras_sessao" class="lista-manobras-sessao">
 
-                    <!-- Manobras cadastradas aparecem aqui -->
 
                 </div>
 
@@ -172,10 +171,15 @@
                     </a>
                 </div>
 
+            <a href="./dashboard.html">
+                        CADASTRAR MANOBRAS →
+                    </a>
+               
+
             </div>
 
 
-            <!-- OBSERVAÇÕES -->
+     
             <div class="sessao-bloco">
 
                 <div class="sessao-titulo">
@@ -196,7 +200,7 @@
             </div>
 
 
-            <!-- FINALIZAR -->
+         
             <div class="sessao-acoes">
 
                 <p>
@@ -204,8 +208,8 @@
                     CAIA, LEVANTE E TENTE DE NOVO.
                 </p>
 
-                <button onclick="salvarSessao()">
-                    REGISTRAR SESSÃO →
+                <button onclick="iniciarSessao()">
+                    INICIAR SESSÃO →
                 </button>
 
             </div>
@@ -227,8 +231,9 @@
 
     var idUsuario = sessionStorage.ID_USUARIO;
 
+    var manobrasUsuario = [];
 
-    // Evita inserir conteúdo digitado diretamente como HTML.
+
     function escaparHTML(texto) {
 
         return String(texto || "").replace(/[&<>"']/g, function (caractere) {
@@ -245,7 +250,7 @@
     }
 
 
-    // Carrega o nome do usuário, a data atual, as bandas e as manobras.
+ 
     function carregarManobras() {
 
         document.getElementById("b_usuario").innerHTML =
@@ -265,7 +270,6 @@
     }
 
 
-    // Preenche o select com as bandas pré-cadastradas.
     function carregarBandas() {
 
         fetch("/bandas/listar")
@@ -331,7 +335,7 @@
     }
 
 
-    // Busca as manobras cadastradas pelo usuário.
+
     function exibirManobras() {
 
         fetch(`/manobras/listar/${idUsuario}`)
@@ -353,6 +357,8 @@
 
 
     function montarListaManobras(manobras) {
+
+        manobrasUsuario = manobras;
 
         var lista = document.getElementById("lista_manobras_sessao");
         var aviso = document.getElementById("aviso_manobras");
@@ -387,50 +393,21 @@
                         <span>QUERO TENTAR</span>
                     </label>
 
-                    <label class="check-manobra check-concluida">
-                        <input
-                            type="checkbox"
-                            class="manobra-concluida"
-                            value="${manobra.id_manobra}"
-                            disabled
-                        >
-                        <span>CONSEGUI</span>
-                    </label>
-
                 </div>
             `;
-
-        });
-
-        // Só permite marcar como concluída uma manobra selecionada.
-        document.querySelectorAll(".manobra-planejada").forEach(function (checkbox) {
-
-            checkbox.addEventListener("change", function () {
-
-                var item = checkbox.closest(".manobra-sessao-item");
-
-                var concluida = item.querySelector(".manobra-concluida");
-
-                concluida.disabled = !checkbox.checked;
-
-                if (!checkbox.checked) {
-                    concluida.checked = false;
-                }
-
-            });
 
         });
 
     }
 
 
-    // Registra a sessão no banco.
-    function salvarSessao() {
+    function iniciarSessao() {
 
         var local = document.getElementById("local_sessao").value.trim();
         var data = document.getElementById("data_sessao").value;
 
-        var idAlbum = document.getElementById("album_sessao").value;
+        var selectBanda = document.getElementById("banda_sessao");
+        var selectAlbum = document.getElementById("album_sessao");
 
         var observacoes = document.getElementById("observacoes_sessao").value.trim();
 
@@ -448,11 +425,15 @@
 
         document.querySelectorAll(".manobra-planejada:checked").forEach(function (checkbox) {
 
-            var item = checkbox.closest(".manobra-sessao-item");
+            var manobra = manobrasUsuario.find(function (item) {
+                return String(item.id_manobra) === checkbox.value;
+            });
 
             manobras.push({
-                idManobra: Number(checkbox.value),
-                finalizado: item.querySelector(".manobra-concluida").checked ? 1 : 0
+                idManobra: manobra.id_manobra,
+                nome: manobra.nome_trick,
+                categoria: manobra.categoria || "Manobra",
+                vezes: 0
             });
 
         });
@@ -462,37 +443,22 @@
             return;
         }
 
-        fetch("/sessoes/cadastrar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                idUsuarioServer: idUsuario,
-                localServer: local,
-                dataServer: data,
-                idAlbumServer: idAlbum,
-                manobrasServer: manobras,
-                observacoesServer: observacoes
-            })
-        }).then(function (resposta) {
+            var sessao = {
+                local: local,
+                data: data,
+                idAlbum: selectAlbum.value,
+                banda: selectBanda.value === "" ? "" : selectBanda.options[selectBanda.selectedIndex].text,
+                album: selectAlbum.value === "" ? "" : selectAlbum.options[selectAlbum.selectedIndex].text,
+                observacoes: observacoes,
+                manobras: manobras
+            };
 
-            if (resposta.ok) {
 
-                alert("Sessão registrada! Continue andando e evoluindo.");
+            sessionStorage.SESSAO_ATUAL = JSON.stringify(sessao);
 
-                window.location.href = "./dashboard/perfil.html";
+            window.location.href = "./dashboard.html";
 
-            } else {
-                throw ("Houve um erro ao registrar a sessão! Código da resposta: " + resposta.status);
-            }
-
-        }).catch(function (erro) {
-            console.log(`#ERRO: ${erro}`);
-            alert("Não foi possível registrar a sessão. Tente novamente.");
-        });
-
-    }
+        }
 
 </script>
 

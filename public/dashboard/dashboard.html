@@ -1,0 +1,301 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="shortcut icon" href="../assets/icon/favicon2.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SUBSOLO | Sessão em andamento</title>
+
+    <link rel="stylesheet" href="./../css/dashboards.css">
+    <link rel="stylesheet" href="./../css/estilo.css">
+
+    <script src="../js/sessao.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Contador de acertos de cada manobra */
+        .contador-vezes {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .contador-vezes button {
+            width: 40px;
+            height: 40px;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+            background: transparent;
+            color: inherit;
+            border: 1px solid currentColor;
+        }
+
+        .contador-vezes .numero {
+            min-width: 36px;
+            text-align: center;
+            font-size: 26px;
+        }
+    </style>
+</head>
+
+<body onload="validarSessao(), carregarSessao()">
+
+    <div class="janela">
+
+        <!-- MENU LATERAL -->
+        <div class="header-left dash-header">
+
+            <h1>SUBSOLO<span>_</span></h1>
+
+            <div class="hello">
+                <h3>Olá, <span id="b_usuario">usuário</span>!</h3>
+                <p>SEU ESPAÇO PESSOAL</p>
+            </div>
+
+            <div class="btn-nav-white">
+                <a href="./perfil.html">
+                    <h3>Meu Perfil</h3>
+                </a>
+            </div>
+
+            <div class="btn-nav">
+                <h3>Minha Sessão</h3>
+            </div>
+
+            <div class="btn-nav-white">
+                <a href="./manobras.html">
+                    <h3>Minhas Manobras</h3>
+                </a>
+            </div>
+
+            <div class="btn-logout" onclick="limparSessao()">
+                <h3>Sair</h3>
+            </div>
+
+        </div>
+
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="dash">
+
+            <div class="sessao-cabecalho">
+
+                <p class="sessao-legenda">SESSÃO EM ANDAMENTO / LIVE LOG</p>
+
+                <h1>SESSÃO ROLANDO<span>.</span></h1>
+
+                <p id="resumo_sessao">Carregando sua sessão...</p>
+
+            </div>
+
+
+            <!-- MANOBRAS -->
+            <div class="sessao-bloco">
+
+                <div class="sessao-titulo">
+                    <span>01 / TRICK LIST</span>
+                    <h2>CONSEGUIU FAZER?</h2>
+
+                    <p>
+                        Toque no + a cada vez que acertar a manobra.
+                        Marcou errado? Use o −.
+                    </p>
+                </div>
+
+                <div id="lista_manobras_ao_vivo" class="lista-manobras-sessao">
+
+                    <!-- As manobras da sessão aparecem aqui -->
+
+                </div>
+
+            </div>
+
+
+            <!-- FINALIZAR -->
+            <div class="sessao-acoes">
+
+                <p id="total_acertos">0 ACERTOS NESTA SESSÃO.</p>
+
+                <button id="btn_finalizar" onclick="finalizarSessao()">
+                    FINALIZAR SESSÃO →
+                </button>
+
+            </div>
+
+
+            <div class="perfil-footer">
+                <p>SUBSOLO_ — DIY FOREVER.</p>
+                <p>SKATE / MUSIC / UNDERGROUND CULTURE</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+
+<script>
+
+    // Sessão planejada na tela "Minha Sessão" (fica guardada até ser finalizada).
+    var sessao = null;
+
+
+    // Evita inserir conteúdo digitado diretamente como HTML.
+    function escaparHTML(texto) {
+
+        return String(texto || "").replace(/[&<>"']/g, function (caractere) {
+
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#039;"
+            }[caractere];
+
+        });
+    }
+
+
+    // Carrega a sessão em andamento.
+    function carregarSessao() {
+
+        document.getElementById("b_usuario").innerHTML =
+            sessionStorage.NOME_USUARIO || "usuário";
+
+        if (!sessionStorage.SESSAO_ATUAL) {
+            alert("Nenhuma sessão em andamento. Planeje uma nova sessão!");
+            window.location.href = "./sessao.html";
+            return;
+        }
+
+        sessao = JSON.parse(sessionStorage.SESSAO_ATUAL);
+
+        var dataBR = sessao.data.split("-").reverse().join("/");
+
+        var trilha = sessao.album
+            ? sessao.banda + " - " + sessao.album
+            : "sem trilha definida";
+
+        document.getElementById("resumo_sessao").innerHTML =
+            escaparHTML(sessao.local) + " / " + dataBR + " / " + escaparHTML(trilha);
+
+        exibirManobras();
+
+    }
+
+
+    // Desenha a lista de manobras com o contador de cada uma.
+    function exibirManobras() {
+
+        var lista = document.getElementById("lista_manobras_ao_vivo");
+        var total = 0;
+
+        lista.innerHTML = "";
+
+        sessao.manobras.forEach(function (manobra, indice) {
+
+            total += manobra.vezes;
+
+            lista.innerHTML += `
+                <div class="manobra-sessao-item">
+
+                    <div class="manobra-sessao-info">
+                        <h3>${escaparHTML(manobra.nome)}</h3>
+                        <p>${escaparHTML(manobra.categoria)} / ${manobra.vezes > 0 ? "CONSEGUI" : "AINDA NÃO"}</p>
+                    </div>
+
+                    <div class="contador-vezes">
+                        <button class="btn-menos" onclick="alterarVezes(${indice}, -1)">−</button>
+                        <span class="numero">${manobra.vezes}</span>
+                        <button class="btn-mais" onclick="alterarVezes(${indice}, 1)">+</button>
+                    </div>
+
+                </div>
+            `;
+
+        });
+
+        document.getElementById("total_acertos").innerHTML =
+            total + (total === 1 ? " ACERTO" : " ACERTOS") + " NESTA SESSÃO.";
+
+    }
+
+
+    // Soma ou tira um acerto de uma manobra.
+    function alterarVezes(indice, variacao) {
+
+        sessao.manobras[indice].vezes =
+            Math.max(0, sessao.manobras[indice].vezes + variacao);
+
+        sessionStorage.SESSAO_ATUAL = JSON.stringify(sessao);
+
+        exibirManobras();
+
+    }
+
+
+    // Grava a sessão no banco e volta para o perfil.
+    function finalizarSessao() {
+
+        var confirmar = confirm("Deseja finalizar a sessão?");
+
+        if (!confirmar) return;
+
+        document.getElementById("btn_finalizar").disabled = true;
+
+        var manobras = sessao.manobras.map(function (manobra) {
+            return {
+                idManobra: manobra.idManobra,
+                vezes: manobra.vezes
+            };
+        });
+
+        fetch("/sessoes/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                localServer: sessao.local,
+                dataServer: sessao.data,
+                idAlbumServer: sessao.idAlbum,
+                manobrasServer: manobras,
+                observacoesServer: sessao.observacoes
+            })
+        }).then(function (resposta) {
+
+            if (resposta.ok) {
+
+                sessionStorage.removeItem("SESSAO_ATUAL");
+
+                alert("Sessão finalizada! Continue andando e evoluindo.");
+
+                window.location.href = "./perfil.html";
+
+            } else {
+                throw ("Houve um erro ao finalizar a sessão! Código da resposta: " + resposta.status);
+            }
+
+        }).catch(function (erro) {
+            console.log(`#ERRO: ${erro}`);
+            alert("Não foi possível finalizar a sessão. Tente novamente.");
+            document.getElementById("btn_finalizar").disabled = false;
+        });
+
+    }
+
+</script>
+
+</html>

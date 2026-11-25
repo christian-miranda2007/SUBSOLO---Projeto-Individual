@@ -145,4 +145,20 @@ ALTER TABLE manobras ADD categoria VARCHAR(45);
  
 -- Campo "Anotações da sessão" da tela "Minha Sessão"
 ALTER TABLE sessoes ADD observacoes VARCHAR(255);
+
+
+
+INSERT INTO bandas (nome_banda, genero, underground)
+VALUES ('Deftones', 'Alternative Metal', 0);
+
+INSERT INTO album (id_banda, titulo, ano)
+VALUES ((SELECT id_banda FROM bandas WHERE nome_banda = 'Deftones'), 'Adrenaline', 1995);
  
+ truncate lugar;
+truncate sessoes;
+truncate sessoes_albuns;
+truncate manobras;
+select * from sessoes_albuns;
+truncate usuario_manobras;
+
+ALTER TABLE sessoes_manobras ADD vezes INT NOT NULL DEFAULT 0;
