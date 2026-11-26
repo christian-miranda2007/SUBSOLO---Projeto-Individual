@@ -1,18 +1,11 @@
-
-
 CREATE DATABASE subsolo;
 USE subsolo;
 CREATE TABLE usuario (
-  id_usuario        INT  PRIMARY KEY AUTO_INCREMENT,
-  nome              VARCHAR(45)  NOT NULL,
+  id_usuario INT  PRIMARY KEY AUTO_INCREMENT,
+  nome VARCHAR(45)  NOT NULL,
   email    VARCHAR(100) NOT NULL UNIQUE,
-  senha             VARCHAR(45)  NOT NULL,
-  adminn         TINYINT(1)  
-  
+  senha VARCHAR(45)  NOT NULL
 );
-select * from usuario;
-select * from usuario_manobras;
-select * from sessoes;
 
 CREATE TABLE bandas (
   id_banda     INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,15 +28,13 @@ CREATE TABLE album (
 
 CREATE TABLE lugar (
   id_lugar  INT PRIMARY KEY AUTO_INCREMENT,
-  nome      VARCHAR(100) ,
-  tipo      VARCHAR(45)  , 
-  cidade    VARCHAR(45) 
+  nome      VARCHAR(100) 
 );
 
 CREATE TABLE manobras (
   id_manobra  INT PRIMARY KEY AUTO_INCREMENT,
-  nome_trick  VARCHAR(45) ,
-  base        VARCHAR(45)                      
+  nome_trick  VARCHAR(45), 
+  categoria VARCHAR(45)
 );
 
 
@@ -66,6 +57,7 @@ CREATE TABLE sessoes (
   data_sessao DATE,
   id_usuario  INT NOT NULL,
   id_lugar    INT NOT NULL,
+  observacoes VARCHAR(255),
   CONSTRAINT fk_sessoes_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
   CONSTRAINT fk_sessoes_lugar
@@ -95,11 +87,7 @@ CREATE TABLE sessoes_manobras (
     FOREIGN KEY (id_manobra) REFERENCES manobras (id_manobra)
 );
 
-
-ALTER TABLE manobras ADD categoria VARCHAR(45);
- 
-
-ALTER TABLE sessoes ADD observacoes VARCHAR(255);
+ALTER TABLE sessoes_manobras ADD vezes INT NOT NULL DEFAULT 0;
 
 
 
@@ -119,7 +107,13 @@ INSERT INTO album (id_banda, titulo, ano) VALUES ((SELECT id_banda FROM bandas W
 
 INSERT INTO album (id_banda, titulo, ano)  VALUES ((SELECT id_banda FROM bandas WHERE nome_banda = 'Lupe de lupe'), 'recreio', 2011);
  
- select * from album;
+select * from album;
+select * from usuario;
+select * from usuario_manobras;
+select * from sessoes;
+select * from manobras;
+select * from sessoes_manobras;
+ 
  
 set foreign_key_checks = 0;
 
@@ -127,13 +121,31 @@ truncate table sessoes_manobras;
 truncate table sessoes_albuns;
 truncate table sessoes;
 truncate table usuario_manobras;
-truncate table bandas_favoritas;
-truncate table skatistas_favoritos;
 truncate table usuario;
 truncate table lugar;
 truncate table manobras;
 truncate table album;
-
+truncate table bandas;
 set foreign_key_checks = 1;
 
-ALTER TABLE sessoes_manobras ADD vezes INT NOT NULL DEFAULT 0;
+CREATE VIEW vw_bandas_mais_ouvidas AS
+SELECT s.id_usuario,
+       b.id_banda,
+       b.nome_banda,
+       COUNT(DISTINCT s.id_sessao) AS qtd_sessoes
+FROM sessoes s
+JOIN sessoes_albuns sa ON sa.id_sessao = s.id_sessao
+JOIN album a ON a.id_album = sa.id_album
+JOIN bandas b ON b.id_banda = a.id_banda
+GROUP BY s.id_usuario, b.id_banda, b.nome_banda;
+ 
+CREATE VIEW vw_manobras_mais_acertadas AS
+SELECT s.id_usuario,
+       m.id_manobra,
+       m.nome_trick,
+       SUM(sm.vezes) AS total_acertos
+FROM sessoes s
+JOIN sessoes_manobras sm ON sm.id_sessao = s.id_sessao
+JOIN manobras m ON m.id_manobra = sm.id_manobra
+GROUP BY s.id_usuario, m.id_manobra, m.nome_trick
+HAVING SUM(sm.vezes) > 0;
