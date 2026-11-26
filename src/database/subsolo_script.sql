@@ -12,7 +12,7 @@ CREATE TABLE usuario (
 );
 select * from usuario;
 select * from usuario_manobras;
-select * from manobras;
+select * from sessoes;
 
 CREATE TABLE bandas (
   id_banda     INT PRIMARY KEY AUTO_INCREMENT,

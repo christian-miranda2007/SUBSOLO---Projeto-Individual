@@ -62,6 +62,14 @@
     margin: 0;
 }
 
+.image-placeholder me-image
+ {
+    width: 50%;
+    height: 200px;
+    position: relative;
+    margin: 0;
+}
+
 .about-foto-principal img {
     width: 100%;
     height: 100%;
@@ -76,9 +84,6 @@
     margin-top: 12px;
 }
 
-/* =========================================
-   ABERTURA
-========================================= */
 
 .about-hero {
     min-height: 85vh;
@@ -150,9 +155,7 @@
     color: #777;
 }
 
-/* =========================================
-   FRASES / CITAÇÕES
-========================================= */
+
 
 .about-citacao {
     margin: 75px 0;
@@ -181,9 +184,6 @@
     letter-spacing: 1px;
 }
 
-/* =========================================
-   CARROSSEIS
-========================================= */
 
 .about-referencias {
     margin-top: 85px;
@@ -241,11 +241,7 @@
     color: #999;
 }
 
-/* =========================================
-   IDENTIDADE DE CADA FASE
-========================================= */
 
-/* INFÂNCIA */
 
 .infancia {
     background: #e8e8e5;
@@ -260,7 +256,7 @@
     background: #deded9;
 }
 
-/* HARDCORE */
+
 
 .hardcore {
     background: #111;
@@ -275,7 +271,7 @@
     background: #202020;
 }
 
-/* MELANCOLIA */
+
 
 .melancolia {
     background: #cbd1d3;
@@ -290,7 +286,7 @@
     background: #bbc3c6;
 }
 
-/* POST-HARDCORE */
+
 
 .post-hardcore {
     background: #e4e2df;
@@ -305,7 +301,7 @@
     background: #d8d6d2;
 }
 
-/* INDIE UNDERGROUND */
+
 
 .indie {
     background: #151515;
@@ -320,7 +316,7 @@
     background: #222;
 }
 
-/* DEFTONES */
+
 
 .deftones {
     background: #101c27;
@@ -335,7 +331,7 @@
     background: #172936;
 }
 
-/* HOJE */
+
 
 .hoje {
     background: #e8e8e5;
@@ -350,9 +346,6 @@
     background: #d9d9d5;
 }
 
-/* =========================================
-   ENCERRAMENTO
-========================================= */
 
 .about-final {
     min-height: 75vh;
@@ -401,9 +394,6 @@
     color: #8cbdd0;
 }
 
-/* =========================================
-   RESPONSIVIDADE
-========================================= */
 
 @media screen and (max-width: 768px) {
 
