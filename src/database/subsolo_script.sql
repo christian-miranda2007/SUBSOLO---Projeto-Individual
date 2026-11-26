@@ -32,28 +32,6 @@ CREATE TABLE album (
 
 );
 
-CREATE TABLE skatistas (
-  id_skatista  INT NOT NULL AUTO_INCREMENT,
-  nome         VARCHAR(45)  NOT NULL,
-  sobrenome    VARCHAR(45)  NULL,
-  apelido      VARCHAR(45)  NULL,
-  estilo       VARCHAR(45)  NULL,
-  dt_nasc      DATE         NULL,
-  ativo        TINYINT(1)   NOT NULL DEFAULT 1,
-  base_skate   VARCHAR(45)  NULL,
-  PRIMARY KEY (id_skatista)
-);
-CREATE TABLE skatista_musico (
-  id_banda           INT ,
-  id_skatista        INT ,
-  integrante_funcao  VARCHAR(45)  NULL,
-  PRIMARY KEY (id_banda, id_skatista),
-  CONSTRAINT fk_skatista_musico_bandas
-    FOREIGN KEY (id_banda) REFERENCES bandas (id_banda),
-  CONSTRAINT fk_skatista_musico_skatistas
-    FOREIGN KEY (id_skatista) REFERENCES skatistas (id_skatista)
-
-) ;
 
 CREATE TABLE lugar (
   id_lugar  INT PRIMARY KEY AUTO_INCREMENT,
@@ -67,29 +45,6 @@ CREATE TABLE manobras (
   nome_trick  VARCHAR(45) ,
   base        VARCHAR(45)                      
 );
-
-
-CREATE TABLE bandas_favoritas (
-  id_usuario  INT NOT NULL,
-  id_banda    INT NOT NULL,
-  PRIMARY KEY (id_usuario, id_banda),
-  CONSTRAINT fk_bandas_favoritas_usuario
-    FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-  CONSTRAINT fk_bandas_favoritas_bandas
-    FOREIGN KEY (id_banda) REFERENCES bandas (id_banda)
-
-) ;
-
-CREATE TABLE skatistas_favoritos (
-  id_usuario   INT NOT NULL,
-  id_skatista  INT NOT NULL,
-  PRIMARY KEY (id_usuario, id_skatista),
-  CONSTRAINT fk_skatistas_favoritos_usuario
-    FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario),
-  CONSTRAINT fk_skatistas_favoritos_skatistas
-    FOREIGN KEY (id_skatista) REFERENCES skatistas (id_skatista)
-  
-) ;
 
 
 CREATE TABLE usuario_manobras (
