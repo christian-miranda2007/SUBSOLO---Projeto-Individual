@@ -20,7 +20,7 @@ function cadastrar(req, res) {
 
         var idSessao;
 
-        // Se o lugar já existe, usa o id dele; se não, cadastra antes
+        
         sessaoModel.buscarLugar(local)
             .then(
                 function (resultadoLugar) {

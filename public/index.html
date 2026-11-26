@@ -14,9 +14,9 @@
     <link rel="icon" href="./assets/icon/favicon2.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
-<body>
+<body onload="bet()">
 
-    <!-- HEADER -->
+
     <header class="header">
         <div class="container header-content">
 
@@ -34,11 +34,10 @@
     </header>
 
 
-    <!-- HOME / BANNER -->
     <section class="banner">
 
-        <!-- SUBSTITUA PELO CAMINHO DA SUA IMAGEM -->
-        <div class="banner-image"></div>
+     
+        <div class="banner-image"  id="banner"></div>
 
         <div class="banner-content">
 
@@ -60,7 +59,7 @@
     </section>
 
 
-    <!-- MANIFESTO -->
+  
     <section class="section manifesto" id="manifesto">
 
         <div class="section-heading">
@@ -94,7 +93,7 @@ O movimento DIY pode nascer de diferentes motivações: economizar dinheiro, enc
 
         </div>
 
-        <!-- CARROSSEL MANIFESTO -->
+     
         <div class="carousel-section">
 
             <div class="carousel-heading">
@@ -135,7 +134,6 @@ O movimento DIY pode nascer de diferentes motivações: economizar dinheiro, enc
     </section>
 
 
-    <!-- PUNK / ROCK -->
     <section class="section punk" id="punk">
 
         <div class="section-heading">
@@ -172,8 +170,6 @@ O movimento DIY pode nascer de diferentes motivações: economizar dinheiro, enc
 
         </div>
 
-
-        <!-- CARROSSEL DE BANDAS -->
         <div class="carousel-section">
 
             <div class="carousel-heading">
@@ -359,7 +355,7 @@ O movimento DIY pode nascer de diferentes motivações: economizar dinheiro, enc
     </section>
 
 
-    <!-- FOOTER -->
+
     <footer class="footer">
 
         <div class="footer-content">
@@ -379,4 +375,26 @@ O movimento DIY pode nascer de diferentes motivações: economizar dinheiro, enc
     </footer>
 
 </body>
+<script>
+
+   let background = [
+   "/assets/images/img_site/background1.jpg",
+    "/assets/images/img_site/background2.jpg",
+    "/assets/images/img_site/background3.jpg",
+    "/assets/images/img_site/background4.jpg",
+    "/assets/images/img_site/background5.jpg",
+    "/assets/images/img_site/background6.jpg",
+    
+    ];
+
+    function bet() {
+        let sorteio = Math.floor(Math.random() * background.length);
+
+       banner.innerHTML = `
+        <img src="${background[sorteio]}" style="width: 100%; height: 100%; object-fit: cover;">
+    `;
+    }
+
+
+</script>
 </html>
