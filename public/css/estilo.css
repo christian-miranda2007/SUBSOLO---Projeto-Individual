@@ -402,12 +402,18 @@ background-image: url('../assets/images/img_site/diy_toy.jpg');
 background-image: url('../assets/images/img_site/diy_zine.jpg');
 }
 
-
-
-
-
-
-
+.punk .carousel-card:nth-child(1) .image-placeholder {
+background-image: url('../assets/images/img_site/ramones.jpg');
+}
+.punk .carousel-card:nth-child(2) .image-placeholder {
+background-image: url('../assets/images/img_site/sexpistols.jpg');
+}
+.punk .carousel-card:nth-child(3) .image-placeholder {
+background-image: url('../assets/images/img_site/joydivision.jpg');
+}
+.punk .carousel-card:nth-child(4) .image-placeholder {
+background-image: url('../assets/images/img_site/misfits.jpg');
+}
 
 
 
