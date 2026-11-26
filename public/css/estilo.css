@@ -228,7 +228,7 @@ html {
 }
 
 .editable-text {
-    font-size: 13px;
+    font-size: 16px;
     line-height: 2;
     margin-bottom: 20px;
 }
@@ -371,7 +371,7 @@ background-image: url('../assets/images/eu/hjemdia.jpeg');
 }
 
 .carousel-card > p {
-    font-size: 10px;
+    font-size: 14px;
     margin-top: 8px;
 }
 
@@ -391,7 +391,46 @@ background-image: url('../assets/images/eu/hjemdia.jpeg');
 }
 
 
-/* FOOTER */
+
+.manifesto .carousel-card:nth-child(1) .image-placeholder {
+background-image: url('../assets/images/img_site/diy_fashion.jpg');
+}
+.manifesto .carousel-card:nth-child(2) .image-placeholder {
+background-image: url('../assets/images/img_site/diy_toy.jpg');
+}
+.manifesto .carousel-card:nth-child(3) .image-placeholder {
+background-image: url('../assets/images/img_site/diy_zine.jpg');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .footer {
     background: #050505;
     padding: 70px 10% 30px;
