@@ -207,7 +207,7 @@
  
             if (idEditando) {
  
-                // Na edição só o status muda: nome e categoria fazem parte do catálogo
+              
                 fetch(`/manobras/editar/${idUsuario}/${idEditando}`, {
                     method: "PUT",
                     headers: {
@@ -347,8 +347,6 @@
             document.getElementById("categoria_manobra").value = manobra.categoria || "";
             document.getElementById("status_manobra").value = manobra.statuss;
             document.getElementById("id_manobra_editando").value = manobra.id_manobra;
- 
-            // Nome e categoria ficam bloqueados: só o status pode ser alterado
             document.getElementById("nome_manobra").disabled = true;
             document.getElementById("categoria_manobra").disabled = true;
  

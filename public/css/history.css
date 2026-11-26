@@ -440,3 +440,36 @@
         padding: 80px 7%;
     }
 }
+
+ .about-final .agradecimentos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+
+        .about-final .agradecimento {
+            flex: 1 1 280px;
+            max-width: 380px;
+            margin: 0;
+        }
+
+        .about-final .agradecimento img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            background: rgba(128, 128, 128, 0.25);
+        }
+
+        .about-final .agradecimento h3 {
+            font-size: 1.8rem;
+            letter-spacing: 0.05em;
+            margin: 1.2rem 0 0.6rem;
+        }
+
+        .about-final .agradecimento p {
+            font-size: 1.35rem;
+            line-height: 1.5;
+        }

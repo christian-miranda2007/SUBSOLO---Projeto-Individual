@@ -33,7 +33,7 @@ function cadastrar(req, res) {
         res.status(400).send("Seu status está undefined!");
     } else {
  
-        // Se a manobra já existe no catálogo, só vincula ao usuário; se não, cadastra antes
+
         manobraModel.buscarPorNome(nome)
             .then(
                 function (resultadoBusca) {

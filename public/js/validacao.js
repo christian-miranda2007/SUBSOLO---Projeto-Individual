@@ -1,7 +1,7 @@
 let numeros = '0123456789';
 let caracteresEspeciais = '@!#$%&*()/?,.[]{}+=-_';
 
-// Verifica se a senha tem pelo menos um dos caracteres da lista
+
 function temAlgum(senha, lista) {
     let contador = 0;
 
@@ -15,7 +15,7 @@ function temAlgum(senha, lista) {
     return false;
 }
 
-// Mostra a regra em verde quando ela foi cumprida
+
 function regra(cumpriu, texto) {
     if (cumpriu) {
         return `<p style="color: #22b122;">${texto}</p>`;
@@ -71,7 +71,7 @@ function cadastrar() {
     } else if (senha != confirmarSenha) {
         alert('As senhas precisam ser iguais.');
     } else {
-        // envia os dados para a API gravar no banco
+    
         fetch('/usuarios/cadastrar', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

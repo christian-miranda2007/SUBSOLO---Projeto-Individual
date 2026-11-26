@@ -162,8 +162,6 @@
 
                 <div class="historico-lista" id="lista_sessoes">
 
-                    <!-- As sessões serão carregadas aqui -->
-
                     <div class="sessao-vazia">
                         <h3>NENHUMA SESSÃO REGISTRADA.</h3>
                         <p>
@@ -206,7 +204,7 @@
     }
 
 
-    // Evita inserir conteúdo digitado diretamente como HTML.
+
     function escaparHTML(texto) {
 
         return String(texto || "").replace(/[&<>"']/g, function (caractere) {
@@ -289,7 +287,7 @@
     }
 
 
-    // Cor de destaque dos gráficos (troque pelo tom do seu layout)
+ 
     var corDestaque = "#e63946";
 
 
@@ -304,7 +302,7 @@
     }
 
 
-    // Gráfico de barras: bandas mais ouvidas em todas as sessões.
+
     function carregarGraficoBandas() {
 
         fetch(`/graficos/bandas/${sessionStorage.ID_USUARIO}`)
@@ -366,7 +364,7 @@
     }
 
 
-    // Gráfico radar: manobras com mais acertos.
+
     function carregarGraficoManobras() {
 
         fetch(`/graficos/manobras/${sessionStorage.ID_USUARIO}`)

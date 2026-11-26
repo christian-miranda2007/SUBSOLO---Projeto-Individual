@@ -21,7 +21,7 @@
         rel="stylesheet">
 
     <style>
-        /* Contador de acertos de cada manobra */
+      
         .contador-vezes {
             display: flex;
             align-items: center;
@@ -51,7 +51,6 @@
 
     <div class="janela">
 
-        <!-- MENU LATERAL -->
         <div class="header-left dash-header">
 
             <h1>SUBSOLO<span>_</span></h1>
@@ -84,7 +83,7 @@
         </div>
 
 
-        <!-- CONTEÚDO PRINCIPAL -->
+     
         <div class="dash">
 
             <div class="sessao-cabecalho">
@@ -98,7 +97,7 @@
             </div>
 
 
-            <!-- MANOBRAS -->
+          
             <div class="sessao-bloco">
 
                 <div class="sessao-titulo">
@@ -113,14 +112,14 @@
 
                 <div id="lista_manobras_ao_vivo" class="lista-manobras-sessao">
 
-                    <!-- As manobras da sessão aparecem aqui -->
+                
 
                 </div>
 
             </div>
 
 
-            <!-- FINALIZAR -->
+          
             <div class="sessao-acoes">
 
                 <p id="total_acertos">0 ACERTOS NESTA SESSÃO.</p>
@@ -146,7 +145,6 @@
 
 <script>
 
-    // Sessão planejada na tela "Minha Sessão" (fica guardada até ser finalizada).
     var sessao = null;
 
 
@@ -195,7 +193,7 @@
     }
 
 
-    // Desenha a lista de manobras com o contador de cada uma.
+
     function exibirManobras() {
 
         var lista = document.getElementById("lista_manobras_ao_vivo");
@@ -232,7 +230,7 @@
     }
 
 
-    // Soma ou tira um acerto de uma manobra.
+ 
     function alterarVezes(indice, variacao) {
 
         sessao.manobras[indice].vezes =
@@ -244,8 +242,6 @@
 
     }
 
-
-    // Grava a sessão no banco e volta para o perfil.
     function finalizarSessao() {
 
         var confirmar = confirm("Deseja finalizar a sessão?");

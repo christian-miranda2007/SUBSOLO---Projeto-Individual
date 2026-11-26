@@ -95,10 +95,10 @@ CREATE TABLE sessoes_manobras (
     FOREIGN KEY (id_manobra) REFERENCES manobras (id_manobra)
 );
 
--- Categoria da manobra (Flatground, Grind, Slide...) usada na tela "Minhas Manobras"
+
 ALTER TABLE manobras ADD categoria VARCHAR(45);
  
--- Campo "Anotações da sessão" da tela "Minha Sessão"
+
 ALTER TABLE sessoes ADD observacoes VARCHAR(255);
 
 
