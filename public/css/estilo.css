@@ -416,7 +416,18 @@ background-image: url('../assets/images/img_site/misfits.jpg');
 }
 
 
-
+.skate .carousel-card:nth-child(1) .image-placeholder {
+background-image: url('../assets/images/img_site/thrasher.jpg');
+}
+.skate .carousel-card:nth-child(2) .image-placeholder {
+background-image: url('../assets/images/img_site/deathWish.jpg');
+}
+.skate .carousel-card:nth-child(3) .image-placeholder {
+background-image: url('../assets/images/img_site/tonyhawk.jpg');
+}
+.skate .carousel-card:nth-child(4) .image-placeholder {
+background-image: url('../assets/images/img_site/skate_music.jpg');
+}
 
 
 
