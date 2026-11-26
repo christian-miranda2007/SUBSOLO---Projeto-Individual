@@ -150,15 +150,35 @@ ALTER TABLE sessoes ADD observacoes VARCHAR(255);
 
 INSERT INTO bandas (nome_banda, genero, underground)
 VALUES ('Deftones', 'Alternative Metal', 0);
+INSERT INTO bandas (nome_banda, genero, underground)
+VALUES ('Descendents', 'pop punk', 0);
+INSERT INTO bandas (nome_banda, genero, underground)
+VALUES ('Lupe de lupe', 'rock alternativo', 1);
+
+
 
 INSERT INTO album (id_banda, titulo, ano)
 VALUES ((SELECT id_banda FROM bandas WHERE nome_banda = 'Deftones'), 'Adrenaline', 1995);
+
+INSERT INTO album (id_banda, titulo, ano) VALUES ((SELECT id_banda FROM bandas WHERE nome_banda = 'Descendents'), 'milo goes to collage', 1982);
+
+INSERT INTO album (id_banda, titulo, ano)  VALUES ((SELECT id_banda FROM bandas WHERE nome_banda = 'Lupe de lupe'), 'recreio', 2011);
  
- truncate lugar;
-truncate sessoes;
-truncate sessoes_albuns;
-truncate manobras;
-select * from sessoes_albuns;
-truncate usuario_manobras;
+ select * from album;
+ 
+set foreign_key_checks = 0;
+
+truncate table sessoes_manobras;
+truncate table sessoes_albuns;
+truncate table sessoes;
+truncate table usuario_manobras;
+truncate table bandas_favoritas;
+truncate table skatistas_favoritos;
+truncate table usuario;
+truncate table lugar;
+truncate table manobras;
+truncate table album;
+
+set foreign_key_checks = 1;
 
 ALTER TABLE sessoes_manobras ADD vezes INT NOT NULL DEFAULT 0;

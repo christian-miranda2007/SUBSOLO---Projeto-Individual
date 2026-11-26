@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://googleapis.com');
 
 *{
 margin: 0;
@@ -276,7 +276,10 @@ html {
             #303030 10px,
             #303030 20px
         );
-    border: 1px dashed #777;
+    border: none;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -286,34 +289,10 @@ html {
     padding: 20px;
 }
 
-.manifesto .image-placeholder,
-.skate .image-placeholder {
-    background:
-        repeating-linear-gradient(
-            135deg,
-            #c6c8c7,
-            #c6c8c7 10px,
-            #d2d4d3 10px,
-            #d2d4d3 20px
-        );
-    border-color: #777;
-    color: #444;
-}
-
-.image-placeholder span {
-    font-size: 45px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.image-placeholder p {
-    font-size: 11px;
-    letter-spacing: 2px;
-}
-
+.image-placeholder span,
+.image-placeholder p,
 .image-placeholder small {
-    font-size: 9px;
-    margin-top: 10px;
+    display: none;
 }
 
 .manifesto-image,
@@ -321,6 +300,22 @@ html {
 .skate-image,
 .history-main-image {
     min-height: 430px;
+}
+
+.manifesto-image {
+background-image: url('/assets/images/img_site/DIY-image.jpg');
+}
+
+.punk-image {
+background-image: url('/assets/images/img_site/906db43c2e78598922638b0307b03334.jpg');
+}
+
+.skate-image {
+background-image: url('../assets/images/img_site/skate_destroy.jpg');
+}
+
+.history-main-image {
+background-image: url('../assets/images/eu/hjemdia.jpeg');
 }
 
 
@@ -381,7 +376,9 @@ html {
 }
 
 .carousel-card .image-placeholder {
-    min-height: 260px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .album-placeholder {
@@ -424,7 +421,6 @@ html {
 }
 
 
-/* RESPONSIVIDADE */
 @media (max-width: 800px) {
 
     .header {
@@ -628,100 +624,3 @@ html {
     width: 50px;
 }
 
-/* ERROS */
-
-#div_erros_login {
-    display: none;
-    color: #ff7777;
-    font-family: var(--fonte-texto);
-    font-size: 12px;
-    margin-top: 15px;
-}
-
-/* RESPONSIVIDADE */
-
-@media screen and (max-width: 768px) {
-    .login {
-        padding: 30px 15px;
-    }
-
-    .login .container {
-        min-height: var(--tamanho-login);
-    }
-
-    .card {
-        width: 90%;
-        padding: 35px 20px;
-    }
-
-    .formulario {
-        width: 100%;
-    }
-}
-
-/* FORMULARIO */
-
-.alerta_erro{
-  display: flex;
-  justify-content: flex-end;
-}
-
-.card_erro {
-  display: none;
-  background-color: #fff;
-  color: black;
-  width: 230px;
-  position: fixed;
-  border-radius: 4px;
-  border: #ED145B 3px solid;
-  padding: 10px;
-  margin-right: 10%;
-}
-
-.card_erro #mensagem_erro{
-  font-weight: 500;
-  font-size: 20px;
-}
-
-.formulario .tipo_campo {
-  font-size: 20px;
-  font-weight: 600 !important;
-}
-
-.formulario {
-  display: flex;
-  flex-direction: column;
-}
-
-input {
-  margin-bottom: 10px;
-  border: 2px solid #32b9cd;
-  padding: 10px;
-  text-align: center;
-  border-radius: 10px;
-}
-
-.btn {
-  font-family: "Barlow", sans-serif;
-  border: 0;
-  border-radius: 5px;
-  font-weight: 600;
-  font-size: 18px;
-  padding: 10px 15px;
-  color: white;
-  background-color: #ED145B;
-  width: 120px;
-  align-self: center;
-  margin-top: 5px;
-}
-
-.loading-div {
-  width: 50px;
-  margin: auto;
-  display: none;
-}
-
-.loading-div img {
-  height: 50px;
-  width: 50px;
-}
